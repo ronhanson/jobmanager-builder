@@ -1,0 +1,203 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# vim: ai ts=4 sts=4 et sw=4 nu
+"""
+(c) 2018 Ronan Delacroix
+Job Manager Docker Builder - Main File
+:author: Ronan Delacroix
+"""
+import os
+import sys
+import six
+import time
+import logging
+import jobmanager.builder.api
+import mongoengine
+import tbx
+import tbx.log
+import configargparse
+
+
+def configure_logging(verbosity, quiet=False, log_file=None, db_host=None, db_port=27017, db_name="jobmanager"):
+    logging.logThreads = False
+
+    logger = logging.getLogger('werkzeug')
+    for handler in logger.handlers:
+        logger.removeHandler(handler)
+
+    logger = logging.getLogger()
+    for handler in logger.handlers:
+        logger.removeHandler(handler)
+
+    logger.setLevel(verbosity)
+
+    if not quiet:
+        tbx.log.add_screen_logging(logger)
+
+    if log_file:
+        tbx.log.add_logging_file_handler(logger, log_file)
+
+    if db_host:
+        tbx.log.add_mongo_logging(logger, 'jobmanager-builder', 'jobmanager', {
+            'LOGGING_MONGO_HOST': db_host,
+            'LOGGING_MONGO_PORT': db_port,
+            'LOGGING_MONGO_DATABASE': db_name,
+            'LOGGING_MONGO_COLLECTION': "job_logs",
+            'LOGGING_MONGO_CAPPED': True,
+            'LOGGING_MONGO_CAPPED_MAX': 2000000,
+            'LOGGING_MONGO_CAPPED_SIZE': 512000000,
+            'LOGGING_MONGO_BUFFER_SIZE': 20,
+            'LOGGING_MONGO_BUFFER_FLUSH_TIMER': 5.0
+        })
+    return logger
+
+
+def get_version():
+    """
+    Retrieves the version number
+    """
+    try:
+        return open(os.path.join(os.path.dirname(os.path.abspath(jobmanager.builder.api.__file__)), '../..', 'VERSION.txt')).read().strip()
+    except:
+        print('Error - Unable to retrieve version number...')
+        exit(1)
+
+
+def run(db_host, db_port, db_name, http_bind, http_port, http_debug, log_file=None):
+
+    while True:
+        try:
+            mongoengine.connect(host=db_host, port=db_port, db=db_name)
+            logging.info("Connected to database %s@%s:%d" % (db_name, db_host, db_port))
+
+            logging.info("Launching web server on %s:%d" % (http_bind, http_port))
+            jobmanager.builder.api.run_api(host=http_bind, port=http_port, debug=http_debug)
+
+            break
+        except KeyboardInterrupt:
+            logging.error("Received Keyboard Interrupt. Exiting.")
+            break
+        except mongoengine.connection.MongoEngineConnectionError:
+            logging.exception("Database connection error to %s. Waiting 10 seconds for retry..." % db_host)
+            time.sleep(10)
+        except Exception as e:
+            logging.exception("Unknown Error (%s). Waiting 10 seconds for retry..." % str(e))
+            time.sleep(10)
+
+    exit(0)
+
+
+def main():
+
+    parser = configargparse.ArgParser(
+        description="""Job Manager Docker Image Builder API""",
+        epilog='"According to this program calculations, there is no such things as too much wine."',
+        config_file_parser_class=configargparse.YAMLConfigFileParser,
+        formatter_class=configargparse.ArgumentDefaultsHelpFormatter,
+        default_config_files=['/etc/jobmanager/builder.yaml', './builder.yaml'],
+        ignore_unknown_config_file_keys=True,
+        add_env_var_help=True,
+        auto_env_var_prefix='JOBMANAGER_BUILDER_',
+        add_config_file_help=True,
+        add_help=False
+    )
+
+    database_group = parser.add_argument_group('Job Database')
+    database_group.add_argument('-s', '--server', help='Address of the MongoDB database server containing jobs.', required=True, env_var='JOBMANAGER_DATABASE_HOST')
+    database_group.add_argument('-p', '--port', type=int, default=27017, help='Port to connect the MongoDB database.', env_var='JOBMANAGER_DATABASE_PORT')
+    database_group.add_argument('-d', '--database', default="jobmanager", help='Database name containing jobs.', env_var='JOBMANAGER_DATABASE_NAME')
+
+    http_group = parser.add_argument_group('HTTP Server options')
+    http_group.add_argument('-b', '--http-bind', default="0.0.0.0", help='Server IP address bindings.')
+    http_group.add_argument('-o', '--http-port', type=int, default=5001, help='Port to bind.')
+    http_group.add_argument('-a', '--app-name', help='Application name (displayed on web interface).')
+    http_group.add_argument('--debug', action="store_true", default=False, help='Activate HTTP debug output.')
+
+    docker_registry_group = parser.add_argument_group('Docker registry options')
+    docker_registry_group.add_argument('-r', '--registry-url', metavar='REGISTRY URL', type=str,
+                                       help='Docker registry url. Registry where to push newly built images.',
+                                       env_var='JOBMANAGER_DOCKER_REGISTRY_URL')
+    docker_registry_group.add_argument('-ru', '--registry-username', metavar='REGISTRY USERNAME', type=str,
+                                       help='Docker registry username for login in. If not set, it will bypass login.',
+                                       env_var='JOBMANAGER_DOCKER_REGISTRY_USERNAME')
+    docker_registry_group.add_argument('-rp', '--registry-password', metavar='REGISTRY PASSWORD', type=str,
+                                       help='Docker registry password for login in.',
+                                       env_var='JOBMANAGER_DOCKER_REGISTRY_PASSWORD')
+    #docker_registry_group.add_argument('-re', '--registry-email', metavar='REGISTRY EMAIL', type=str,
+    #                                   help='Docker registry email for login in.',
+    #                                   env_var='JOBMANAGER_DOCKER_REGISTRY_EMAIL')
+    docker_registry_group.add_argument('-i', '--base-image', metavar='BASE IMAGE', type=str,
+                                       help='Base Docker image of Job Manager Client to build upon. '
+                                            '(default: ronhanson/jobmanager-client:latest)',
+                                       env_var='JOBMANAGER_CLIENT_DOCKER_BASE_IMAGE')
+
+    log_group = parser.add_argument_group('Log output')
+    log_group.add_argument('-l', '--log-file', type=configargparse.FileType('w'), default=None, help='Optionally log to file.')
+    log_group.add_argument('-q', '--quiet', action="store_true", default=False, help='Do not output on screen.')
+    log_group.add_argument('-v', '--verbosity', default="INFO", help='Log verbosity to screen.',
+                           choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
+
+    config_group = parser.add_argument_group('Config file')
+    config_group.add_argument("-c", "--config-file", dest="config_file",
+                              help="config file path", is_config_file_arg=True)
+    config_group.add_argument('--create-config-file', metavar="CONFIG_OUTPUT_PATH",
+                              help="takes the current command line "
+                                   "args and writes them out to a config file at the given path, then "
+                                   "exits", is_write_out_config_file_arg=True)
+
+    misc_group = parser.add_argument_group('Miscellaneous commands')
+    misc_group.add_argument("-h", "--help", action="help", help="show this help message and exit.")
+    misc_group.add_argument('--version', action='version', version='%(prog)s {version}'.format(version=get_version()), env_var=None)
+
+    args = vars(parser.parse_args())
+
+    # Logging setup
+    log_file = os.path.abspath(args.get('log_file').name) if args.get('log_file') else None
+    configure_logging(
+        args.get('verbosity'),
+        quiet=args.get('quiet'),
+        log_file=log_file,
+        db_host=args.get('server'),
+        db_port=int(args.get('port')),
+        db_name=args.get('database')
+    )
+
+    if args.get('registry_url'):
+        jobmanager.builder.lib.DOCKER_REGISTRY_URL = args.get('registry_url')
+        logging.info("Setting docker registry url to %s" % jobmanager.builder.lib.DOCKER_REGISTRY_URL)
+    else:
+        logging.warning("Warning - no Docker registry set. Image will be built locally but not pushed anywhere.")
+
+    #if args.get('registry_email'):
+    #    jobmanager.builder.lib.DOCKER_REGISTRY_EMAIL = args.get('registry_email', None)
+    #    logging.info("Setting docker registry email to %s" % jobmanager.builder.lib.DOCKER_REGISTRY_EMAIL)
+    if args.get('registry_username'):
+        jobmanager.builder.lib.DOCKER_REGISTRY_USERNAME = args.get('registry_username', None)
+        logging.info("Setting docker registry username to %s" % jobmanager.builder.lib.DOCKER_REGISTRY_USERNAME)
+    if args.get('registry_password'):
+        jobmanager.builder.lib.DOCKER_REGISTRY_PASSWORD = args.get('registry_password', None)
+        logging.info("Setting docker registry password to %s" % jobmanager.builder.lib.DOCKER_REGISTRY_PASSWORD)
+
+    if args.get('base_image'):
+        jobmanager.builder.lib.BASE_IMAGE = args.get('base_image')
+        logging.info("Setting docker base job manager client image to %s" % jobmanager.builder.lib.BASE_IMAGE)
+
+    if args.get('app_name'):
+        jobmanager.builder.api.APP_NAME = args.get('app_name')
+        logging.info("Setting web application name and title to %s" % jobmanager.builder.api.APP_NAME)
+
+    # Run boy run
+    run(
+        db_host=args.get('server'),
+        db_port=int(args.get('port')),
+        db_name=args.get('database'),
+        http_bind=args.get('http_bind'),
+        http_port=int(args.get('http_port')),
+        http_debug=args.get('debug'),
+        log_file=log_file
+    )
+    exit(0)
+
+
+if __name__ == "__main__":
+    main()

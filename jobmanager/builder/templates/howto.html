@@ -1,0 +1,32 @@
+{% extends "common/base.html" %}
+{% block head %}
+    <link href="/static/css/howto.css" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+{% block body %}
+    <div class="row header" id="howto">
+        <h3>How to use this tool?</h3>
+        <p>
+        Docker Image Builder is a helper tool to allow you to easily build Job Manager Client Docker images, and pack your own jobs into it.
+        </p>
+        <p>
+        You simply need to put your Job code in some python file, targz'd, zipped or not.
+        </p>
+        <p>
+        Then, you can build your Docker image through web user interface on the <a href="/file">upload file package page</a> or the <a href="/build">Code Editor page</a>
+        </p>
+        <p>
+        You can also script things using the API located on <a href="/build">/build</a> and access it using your favorite tool, like curl :
+        </p>
+        <pre><code>curl -X POST http://0.0.0.0:5001/build \
+  -H 'accept: application/json' \
+  -H 'content-type: multipart/form-data' \
+  -F 'name=test_upload' \
+  -F 'tags=latest v1' \
+  -F 'pip=tbx requests' \
+  -F 'imports=test_upload' \
+  -F 'apt=' \
+  -F package=@./doc/examples/test_upload.py</code></pre>
+
+    </div>
+
+{% endblock %}

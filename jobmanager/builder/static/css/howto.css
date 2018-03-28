@@ -1,0 +1,17 @@
+/*
+Job Manager Builder
+How to CSS
+@author Ronan Delacroix
+*/
+
+#howto {
+    text-align: left;
+    font-size: 0.7em;
+    width: 60%;
+    text-align: justify;
+}
+
+#howto pre {
+    background: rgba(0,0,0,0.5);
+    padding: 10px 20px;
+}

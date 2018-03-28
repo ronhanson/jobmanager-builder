@@ -1,0 +1,20 @@
+{% extends "build.html" %}
+{% block upload %}
+                <tr>
+                    <td class="label">Python package *<small>.zip, .tar.gz, .py</small></td>
+                    <td class="input">
+                        <input type="file" name="package" id="package" class="fileinput" required/>
+                        <label class="emboss medium_button" for="package">
+                            <i class="fa fa-upload"></i>
+                            &nbsp;
+                            <span>Choose a file</span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Import / Entry point *<small>i.e mypackage.my_module</small></td>
+                    <td class="input">
+                        <input type="text" name="imports" value="" required/>
+                    </td>
+                </tr>
+{% endblock %}

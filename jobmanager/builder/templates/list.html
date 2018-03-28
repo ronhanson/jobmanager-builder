@@ -1,0 +1,36 @@
+{% extends "common/base.html" %}
+{% block head %}
+    <link href="/static/css/list.css" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+{% block body %}
+    <div class="row header">
+        <ul>
+            {% for image in image_list %}
+                <li class="image">
+                    <strong title="{{ image.image_id }}">{{ image.uuid }}</strong>
+                    <div class="name">{{ image.tags[0] }}</div>
+                    <div class="date">Created <span>{{ image.created }}</span><br/> Updated <span>{{ image.updated }}</span></div>
+                    <div class="jobs">
+                    {% for job in image.jobs %}
+                        <div class="job">{{ job }}</div>
+                    {% endfor %}
+                    </div>
+                    <div class="tags">
+                    {% for tag in image.tags %}
+                        <div class="tag">{{ tag }}</div>
+                    {% endfor %}
+                    </div>
+                    <div class="links">
+                        <a href="data:text/plain;charset=utf-8,{{ image.dockerfile | urlencode }}" download="Dockerfile"><i class="fa fa-download"></i>&nbsp;Download Dockerfile</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        $(".main ul li.image .date span").each( function(i, el) {
+            $(el).html(moment.utc($(el).html()).fromNow());
+        });
+    </script>
+
+{% endblock %}

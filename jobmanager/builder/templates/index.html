@@ -1,0 +1,32 @@
+{% extends "common/base.html" %}
+{% block head %}
+    <link href="/static/css/index.css" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+{% block body %}
+    <div class="row header">
+        <ul>
+            <li><a href="/file" title="File Upload">
+                <i class="fa fa-file-code-o"></i>
+                <strong>Upload</strong>
+                <small>Create Docker image by uploading file</small>
+            </a></li>
+            <li><a href="/code" title="Code">
+                <i class="fa fa-code"></i>
+                <strong>Code</strong>
+                <small>Code directly in browser and create your Docker image!</small>
+            </a></li>
+            <li><a href="/list" title="List Docker Images">
+                <i class="fa fa-list"></i>
+                <strong>List Images</strong>
+                <small>Create Docker image by uploading file</small>
+            </a></li>
+            <li><a href="/howto" title="How to use API">
+                <i class="fa fa-terminal"></i>
+                <strong>How to use API</strong>
+                <small>Explains how to script your Docker image builds.</small>
+            </a></li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

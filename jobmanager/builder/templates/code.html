@@ -1,0 +1,56 @@
+{% extends "build.html" %}
+{% block upload %}
+                <tr>
+                    <td colspan="2">
+                        <div id="editor" style="position: relative; min-height: 300px; width: 100%;">import mongoengine
+import subprocess
+from jobmanager.common.job import Job
+
+
+@make_job("ExecuteJob",
+          command=mongoengine.StringField(required=True),
+          output=mongoengine.StringField(default=None))
+def execute(job: Job):
+    job.log_info('Job uuid is %s - Executing command %s...' % (job.uuid, job.command))
+    result = subprocess.run(job.command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    job.log_info(result.stdout.decode('utf-8'))
+    if result.stderr.decode('utf-8'):
+        job.log_error(result.stderr.decode('utf-8'))
+    result.check_returncode()
+    job.output = result.stdout.decode('utf-8') + " " + result.stderr.decode('utf-8')</div>
+                        <input type="hidden" name="imports" value="main" required/>
+                    </td>
+                </tr>
+{% endblock %}
+{% block upload_script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ext-language_tools.js"></script>
+<script>
+    (function($){
+
+        // Override default behavior
+        on_build_submit = function(formData, socket) {
+            var code = editor.getValue();
+            var blob = new Blob([code], {type: 'text/plain; filename="main.py"'});
+            formData.append("package", blob, "main.py");
+            formData.append("sid", socket.id);
+            return formData;
+        }
+
+        editor = ace.edit("editor", {
+            mode: "ace/mode/python",
+            showPrintMargin: 0,
+            wrap: "free",
+            useSoftTabs: true,
+            navigateWithinSoftTabs: true,
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            maxLines: 30,
+            minLines: 2
+        });
+        editor.setTheme("ace/theme/tomorrow_night");
+
+    })(jQuery);
+</script>
+
+{% endblock %}

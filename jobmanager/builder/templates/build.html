@@ -1,0 +1,59 @@
+{% extends "common/base.html" %}
+{% block head %}
+    <link href="/static/css/build.css" rel="stylesheet" type="text/css" media="all">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.css" rel="stylesheet" type="text/css" media="all">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+
+{% endblock %}
+{% block body %}
+    <div class="row header">
+        <form id="builder" method="POST" enctype="multipart/form-data" action="/build">
+
+            <table>
+                <tr>
+                    <td class="label">Docker Image name *</td>
+                    <td class="input"><input type="text" name="name" required /></td>
+                </tr>
+                <tr>
+                    <td class="label">Docker Image tags</td>
+                    <td class="input"><input type="text" name="tags" class="tag" value="latest"/></td>
+                </tr>
+                {% block upload %}{% endblock %}
+                <tr>
+                    <td class="label">PIP requirements</td>
+                    <td class="input"><input type="text" name="pip" class="tag"/></td>
+                </tr>
+                <tr>
+                    <td class="label">APT packages</td>
+                    <td class="input"><input type="text" name="apt" class="tag"/></td>
+                </tr>
+            </table>
+            <div id="submit" class="emboss medium_button">Submit</div>
+        </form>
+    </div>
+    <div class="row header" id="loading">
+        <i class="big fa fa-cog fa-spin" aria-hidden="true"></i><br/>
+        <label>Please wait, this might take a while...</label>
+        <textarea id="debug"></textarea>
+    </div>
+    <div class="row header" id="result">
+        <i class="big fa" aria-hidden="true"></i>
+        <div id="message"></div>
+        <div id="image" class="emboss"></div>
+        <div id="tags"></div>
+        <div id="jobs"></div>
+        <div id="tasks"></div>
+        <div id="restart" class="emboss medium_button">
+            <i class="fa fa-share fa-fw fa-rotate-180" aria-hidden="true"></i> Back
+        </div>
+        <textarea id="details"></textarea>
+    </div>
+    <script src="/static/js/build.js"></script>
+{% block upload_script %}{% endblock %}
+
+
+{% endblock %}

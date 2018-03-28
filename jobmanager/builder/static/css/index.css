@@ -1,0 +1,48 @@
+/*
+Job Manager Builder
+Index CSS
+@author Ronan Delacroix
+*/
+.main ul {
+    display: block;
+    width: 100%;
+    position: relative;
+    padding: 0;
+}
+
+.main li {
+    list-style-type: none;
+    width: 200px;
+    height: 150px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    display: inline-block;
+    margin: 10px;
+}
+
+.main li a {
+    display: block;
+    padding: 10px 5px;
+}
+
+.main li a strong {
+    display: block;
+    font-size: 1.1em;
+    margin: 10px auto;
+}
+
+.main li a small {
+    display: block;
+    font-size: 0.6em;
+}
+
+.main li a i.fa{
+    display: block;
+    font-size: 1.8em;
+    margin: 10px auto;
+}
+
+.main li:hover {
+    box-shadow: inset rgba(0, 0, 0, 0.5) 0px 1px 10px 2px;
+    background: rgba(0, 0, 0, 0.2);
+}

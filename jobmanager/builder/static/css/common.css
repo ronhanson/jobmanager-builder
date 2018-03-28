@@ -1,0 +1,361 @@
+/*
+Job Manager Builder
+Common CSS
+@author Ronan Delacroix
+*/
+
+body, table {
+    padding:0 0 0 0;
+    margin:0;
+}
+
+body {
+    background: #222;
+    color: #DDD;
+    font-size: 15px;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+h1, h2 {
+    margin: 0;
+}
+
+table {
+    color: inherit;
+    border-spacing : 0;
+    border-collapse : collapse;
+}
+
+table tr td, table tr th {
+    padding: 0;
+}
+
+#container {
+    color: #DDD;
+    background: #000;
+    padding: 4px 6px;
+    font-size: 15px;
+    min-height: 100%;
+    overflow: scroll-y;
+    padding: 0;
+}
+
+a, a:visited, a:hover {
+    text-decoration: none;
+    color: white;
+}
+
+#logo {
+    font-size: 3em;
+    color: white;
+    position: relative;
+    display: block;
+    top: 40px;
+    height: 80px;
+    width: fit-content;
+    margin: auto;
+}
+
+div.main {
+    background: #485563;
+    background: -webkit-linear-gradient(to left, #485563 , #29323c);
+    background: linear-gradient(to left, #485563 , #29323c);
+    padding: 10px 20px 20px 20px;
+    /*box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.8), inset 0px 1px 3px -1px rgba(255,255,255,0.8);*/
+    box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.8), inset 0px 1px 3px -1px rgba(255,255,255,0.8), inset 0px 1px 3px -1px rgba(236, 68, 208, 0.8);
+    border-radius: 3px;
+    overflow: hidden;
+    display: inline-block;
+    min-width: 500px;
+    font-size: 1.4em;
+    margin-top: 40px;
+    width: 60%;
+
+}
+
+div.main h1 {
+    font-size: 1.3em;
+    line-height: 1.3em;
+    margin: 15px 0px 30px 0px;
+}
+
+div.main h2 {
+    margin-bottom: 15px;
+    color: rgb(41, 48, 58);
+    text-shadow: #666 0px 0.8px 0px, #111 0px -1px 0px;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+.header > div .fa {
+    font-weight: normal;
+}
+
+.header .button, .header .medium_button {
+    border-radius: 5px;
+    padding: 7px 15px 7px 15px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+.header .medium_button {
+    line-height: 30px;
+}
+
+.row {
+    margin: 10px auto;
+}
+
+.row.header {
+    position: relative;
+    width: 95%;
+}
+
+.emboss {
+    box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.5), inset 0px 1px 2px -1px rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.08);
+    transition: all 0.2s;
+}
+.button, .button label, .medium_button, .medium_button label{
+    cursor: pointer;
+}
+.tooltip {
+    cursor: help;
+}
+.emboss.button:hover , .emboss.tooltip:hover,
+.emboss.medium_button:hover{
+    background: rgba(255,255,255,0.2);
+    box-shadow: 1px 1px 8px 2px rgba(0,0,0,0.8), inset 0px 1px 3px -1px rgba(255,255,255,0.8);
+}
+.emboss.button:active , .emboss.tooltip:active,
+.emboss.medium_button:active{
+    background: rgba(0,0,0,0.2);
+    box-shadow: 1px 1px 8px 2px rgba(0,0,0,0.8), inset 0px 1px 3px -1px rgba(255,255,255,0.8);
+}
+
+
+/*********
+   FONTS
+ *********/
+
+@font-face {
+    font-family: 'barista';
+    src: url('/static/fonts/barista.otf') format('truetype');
+}
+/*
+@font-face {
+    font-family: 'geizer';
+    src: url('/static/fonts/geizer.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'allegiant';
+    src: url('/static/fonts/allegiant.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'ridgeline';
+    src: url('/static/fonts/ridgeline.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'bayshore';
+    src: url('/static/fonts/bayshore.woff') format('woff');
+}*/
+
+
+
+
+/*****************************
+   TITLES AND LOGOS CSS FUN
+ ****************************/
+
+#logo .neon {
+    font-family: 'barista';
+    color: white;
+    text-shadow: rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px;
+
+    animation-name: flick;
+    animation-duration: 5s;
+    animation-timing-function: ease;
+    animation-iteration-count: infinite;
+}
+
+@keyframes flick {
+    0%   {color: white; text-shadow: rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px;}
+    20%   {color: white; text-shadow: rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px;}
+    40%   {text-shadow: rgba(255, 39, 152, 1) 0px 0px 30px,
+                 rgba(255, 39, 152, 1) 0px 0px 30px,
+                 rgba(255, 39, 152, 1) 0px 0px 30px,
+                 rgba(255, 39, 152, 1) 0px 0px 30px,
+                 rgba(255, 39, 152, 1) 0px 0px 30px;}
+    60%   {text-shadow: rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px;}
+    85%   {color: white; text-shadow: rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px;}
+    86%   {color: rgb(55, 55, 55); text-shadow: none;}
+    92%   {color: rgb(55, 55, 55); text-shadow: none;}
+    93%   {color: white; text-shadow: rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px;}
+    97%   {color: white; text-shadow: rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px;}
+    98%   {color: rgb(55, 55, 55); text-shadow: none;}
+    100%   {color: rgb(55, 55, 55); text-shadow: none;}
+}
+#logo:hover .neon {
+    animation-name: glow;
+    animation-duration: 5s;
+    animation-timing-function: ease;
+    animation-iteration-count: infinite;
+}
+
+@keyframes glow {
+    0%   {text-shadow: rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px;}
+    20%   {text-shadow: rgba(255, 39, 152, 1) 0px 0px 40px,
+                 rgba(255, 39, 152, 1) 0px 0px 40px,
+                 rgba(255, 39, 152, 1) 0px 0px 40px,
+                 rgba(255, 39, 152, 1) 0px 0px 40px,
+                 rgba(255, 39, 152, 1) 0px 0px 40px;}
+    40%   {text-shadow: rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px;}
+    60%   {text-shadow: rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px;}
+    80%   {text-shadow: rgba(255, 39, 152, 1) 0px 0px 40px,
+                 rgba(255, 39, 152, 1) 0px 0px 40px,
+                 rgba(255, 39, 152, 1) 0px 0px 40px,
+                 rgba(255, 39, 152, 1) 0px 0px 40px,
+                 rgba(255, 39, 152, 1) 0px 0px 40px;}
+    100%   {text-shadow: rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px,
+                 rgba(255, 39, 152, 1) 0px 0px 20px;}
+}
+/*
+#logo .anaglyph {
+    font-family: 'allegiant';
+    font-size: 0.8em ;
+    text-shadow: rgb(30, 242, 241) -6px 0px 1px,
+                 rgb(246, 5, 10) 6px 0px 1px;
+    padding-left: 15px;
+    letter-spacing: 5px;
+    transition: all 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+#logo:hover .anaglyph {
+    font-family: 'allegiant';
+    text-shadow: rgb(30, 242, 241) 6px 0px 1px,
+                 rgb(246, 5, 10) -6px 0px 1px;
+    transition: all 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+#logo .threeD {
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 1px 0 rgb(204,204,204),
+                 0 2px 0 rgb(201,201,201),
+                 0 3px 0 rgb(187,187,187),
+                 0 4px 0 rgb(185,185,185),
+                 0 5px 0 rgb(170,170,170),
+                 0 6px 1px rgba(0,0,0,0.0980392),
+                 0 0 5px rgba(0,0,0,0.0980392),
+                 0 1px 3px rgba(0,0,0,0.298039),
+                 0 3px 5px rgba(0,0,0,0.2),
+                 0 5px 10px rgba(0,0,0,0.247059),
+                 0 10px 10px rgba(0,0,0,0.2),
+                 0 20px 20px rgba(0,0,0,0.14902);
+}
+
+#logo .rainbow {
+    font-family: monospace;
+    letter-spacing: 13px;
+    font-size: 1.2em;
+    text-shadow: 3px 0 0 rgb(217,31,38),
+                 6px 0 0 rgb(226,91,14),
+                 9px 0 0 rgb(245,221,8),
+                 12px 0 0 rgb(5,148,68),
+                 15px 0 0 rgb(2,135,206),
+                 18px 0 0 rgb(4,77,145),
+                 21px 0 0 rgb(42,21,113);
+    transition: all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -webkit-transform: scaleX(1) scaleY(1) scaleZ(1);
+    transform: scaleX(1) scaleY(1) scaleZ(1);
+    -webkit-transform-origin: 50% 50% 0;
+    transform-origin: 50% 50% 0;
+}
+
+#logo .rainbow:hover {
+    text-shadow: -3px 0 0 rgb(217,31,38),
+                 -6px 0 0 rgb(226,91,14),
+                 -9px 0 0 rgb(245,221,8),
+                 -12px 0 0 rgb(5,148,68),
+                 -15px 0 0 rgb(2,135,206),
+                 -18px 0 0 rgb(4,77,145),
+                 -21px 0 0 rgb(42,21,113);
+    -webkit-transition: all 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -moz-transition: all 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -o-transition: all 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: all 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+#logo .retro {
+    font-family: 'geizer';
+	color: #d7ceb2;
+	text-shadow: 3px 3px 0px #2c2e38, 5px 5px 0px #5c5f72;
+	letter-spacing: 10px;
+}
+
+
+
+*/
+
+/*
+#logo .icon {
+    font-family: FontAwesome;
+    padding: 0 8px 0 0;
+    font-size: 1.3em;
+    color: rgba(139, 195, 75, 1);
+    transform: rotate(-10deg);
+    text-shadow: rgba(0,0,0,0.7) 0px 5px 20px, rgba(0,0,0,0.7) 0px 5px 20px !important;
+    position: absolute;
+    left: 0px;
+    top: -10px;
+    font-weight: lighter;
+}*/
+
+#logo .text {
+    position: relative;
+    font-weight: lighter;
+}
+
+#logo .normal {
+    font-family: monospace;
+    font-weight: bold;
+}
+
+footer {
+    padding: 10px;
+    margin: 40px 20px 20px 20px;
+    color: rgba(70, 70, 70, 1);
+}
+
+footer a, footer a:visited {
+    color: rgba(100, 100, 100, 1);
+}
+
+footer a:hover {
+    color: rgba(150, 150, 150, 1);
+}
