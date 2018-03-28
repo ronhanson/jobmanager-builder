@@ -99,6 +99,12 @@ i.big {
     margin: 30px 10px;
 }
 
+#loading small {
+    display: block;
+    margin: 5px;
+    transition: all 1s ease;
+}
+
 #result #message {
     font-size: 1.1em;
     line-height: 1.3em;
@@ -153,3 +159,4 @@ i.big {
     font-family: monospace;
     border-radius: 20px;
 }
+
