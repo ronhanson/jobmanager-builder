@@ -11,18 +11,18 @@ Project url : https://github.com/ronhanson/python-jobmanager-builder
 <table>
     <tr>
         <td>
-            <img src="doc/screencaptures/jobmanager-builder-index.png" alt="Index page" width="200" />
+            <img src="doc/screencaptures/jobmanager-builder-index.png" alt="Index page" width="300" />
         </td>
         <td>
-            <img src="doc/screencaptures/jobmanager-builder-file.png" alt="File Upload page" width="200" />
+            <img src="doc/screencaptures/jobmanager-builder-file.png" alt="File Upload page" width="300" />
         </td>
     </tr>
     <tr>
         <td>
-            <img src="doc/screencaptures/jobmanager-builder-code.png" alt="Code page" width="200" />
+            <img src="doc/screencaptures/jobmanager-builder-code.png" alt="Code page" width="300" />
         </td>
         <td>
-            <img src="doc/screencaptures/jobmanager-builder-list.png" alt="List Image page" width="200" />
+            <img src="doc/screencaptures/jobmanager-builder-list.png" alt="List Image page" width="300" />
         </td>
     </tr>
 </table>
