@@ -1,4 +1,4 @@
-jobmanager-common >= 0.13.4
+jobmanager-common >= 0.13.5
 flask >= 0.10
 docker >= 3.1
 arrow >= 0.12

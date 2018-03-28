@@ -26,8 +26,19 @@ DOCKER_REGISTRY_PASSWORD = None
 #DOCKER_REGISTRY_EMAIL = None
 
 
-class DockerBuilder():
+def test_docker_api():
+    """
+    Dummy function to test Docker API connection.
+    Might raise ConnectionErrors
+    """
+    client = docker.from_env()
+    client.images.list()
 
+
+class DockerBuilder:
+    """
+    Docker Builder class is used to create Job Manager Client docker images with jobs included alongside with their requirements.
+    """
     def __init__(self, folder, image_name, tags, imports, requirements, apt_packages, base_image=None, logger=None, on_log_debug=None, on_log_progress=None):
         self.image_uuid = None
         self.image_id = None
