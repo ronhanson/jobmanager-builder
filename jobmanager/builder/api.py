@@ -22,9 +22,9 @@ from functools import reduce
 import operator
 import shutil
 from . import lib
-import jobmanager.common.docker
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 import eventlet
+from jobmanager.common.docker import DockerImage
 
 eventlet.monkey_patch()
 
@@ -109,7 +109,7 @@ def howto():
 @app.route('/list')
 def listimage():
     # TODO: refresh tags and name (latest might not be latest anymore)
-    image_list = jobmanager.common.docker.DockerImage.objects().to_safe_dict()
+    image_list = DockerImage.objects().to_safe_dict()
     return render_template('list.html', title="%s - Docker image Builder" % APP_NAME, image_list=image_list, app_name=APP_NAME)
 
 
